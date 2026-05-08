@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shanmuga Sundar — Service Transformation & Automation Architect</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0b0e14;
+      --bg2:      #111520;
+      --bg3:      #171c28;
+      --panel:    #1a2035;
+      --border:   #252d42;
+      --gold:     #e8a838;
+      --gold2:    #f5c96a;
+      --teal:     #38b2ac;
+      --text:     #e8eaf0;
+      --muted:    #7c88a8;
+      --tag-bg:   #1e2a45;
+      --tag-txt:  #8ab4e8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 60px;
+      background: rgba(11,14,20,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      color: var(--gold);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .25s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 3rem 4rem;
+      overflow: hidden;
+    }
+
+    /* diagonal accent lines */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 600px; height: 600px;
+      border: 1px solid rgba(232,168,56,.07);
+      border-radius: 50%;
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    #hero .ring2 {
+      position: absolute;
+      top: 20px; right: -20px;
+      width: 440px; height: 440px;
+      border: 1px solid rgba(232,168,56,.05);
+      border-radius: 50%;
+      animation: pulse 8s ease-in-out infinite .8s;
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.06); opacity: .5; }
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--gold);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      opacity: 0;
+      animation: fadeUp .7s .2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp .7s .35s forwards;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 640px;
+      margin-bottom: 2.4rem;
+      opacity: 0;
+      animation: fadeUp .7s .5s forwards;
+    }
+
+    .hero-sub strong { color: var(--text); font-weight: 500; }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .7s .65s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .75rem 1.6rem;
+      border-radius: 4px;
+      font-size: .85rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-decoration: none;
+      transition: all .25s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #0b0e14;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,168,56,.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .7s .8s forwards;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem 1.8rem;
+      text-align: right;
+      min-width: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold);
+    }
+
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .3rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION COMMON ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 3rem;
+    }
+
+    .section-wrap {
+      max-width: 1200px;
+      margin: auto;
+      width: 100%;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--gold);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong { color: var(--text); }
+
+    .highlight-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+      margin-top: 1.5rem;
+    }
+
+    .highlight-box p {
+      font-size: .95rem !important;
+      font-style: italic;
+      color: var(--text) !important;
+    }
+
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .cert-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .cert-icon {
+      font-size: 1.4rem;
+      margin-top: .1rem;
+    }
+
+    .cert-name {
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cert-org {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: .2rem;
+    }
+
+    /* ── EXPERTISE ── */
+    #expertise { background: var(--bg); }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .exp-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: border-color .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s;
+    }
+
+    .exp-card:hover { border-color: rgba(232,168,56,.3); transform: translateY(-4px); }
+    .exp-card:hover::before { transform: scaleX(1); }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: .6rem;
+      color: var(--text);
+    }
+
+    .card-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg2); }
+
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .skill-group h3 {
+      font-size: .78rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--gold);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      color: var(--tag-txt);
+      border: 1px solid rgba(138,180,232,.12);
+      border-radius: 4px;
+      padding: .35rem .85rem;
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      transition: all .2s;
+    }
+
+    .tag:hover {
+      background: rgba(138,180,232,.15);
+      border-color: rgba(138,180,232,.35);
+      transform: translateY(-1px);
+    }
+
+    .tag.gold {
+      background: rgba(232,168,56,.1);
+      color: var(--gold2);
+      border-color: rgba(232,168,56,.2);
+    }
+
+    .tag.teal {
+      background: rgba(56,178,172,.1);
+      color: #81e6d9;
+      border-color: rgba(56,178,172,.2);
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg); }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-left: 2.5rem;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -2rem;
+      top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px rgba(232,168,56,.2);
+    }
+
+    .tl-dot.muted {
+      background: var(--muted);
+      box-shadow: 0 0 0 3px rgba(124,136,168,.15);
+    }
+
+    .tl-period {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem;
+      color: var(--gold);
+      letter-spacing: .1em;
+      margin-bottom: .4rem;
+    }
+
+    .tl-role {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .2rem;
+    }
+
+    .tl-org {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-bottom: .9rem;
+    }
+
+    .tl-points {
+      list-style: none;
+    }
+
+    .tl-points li {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: .5rem;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .tl-points li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: .75rem;
+    }
+
+    .tl-points strong { color: var(--text); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--bg2);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-left h2 { margin-bottom: 1rem; }
+
+    .contact-left p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .95rem;
+      padding: .9rem 1.2rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all .25s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
+    .contact-icon {
+      font-size: 1.2rem;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .value-props {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .vp-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem;
+    }
+
+    .vp-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--gold);
+    }
+
+    .vp-text {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: .3rem;
+      line-height: 1.5;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .12em;
+    }
+
+    .footer-copy {
+      font-size: .75rem;
+      color: var(--border);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    /* ── AVATAR ── */
+    .avatar-wrap {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp .7s .15s forwards;
+    }
+
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(var(--gold), var(--teal), var(--gold));
+      animation: spin 6s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .avatar-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--bg);
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* SVG avatar placeholder */
+    .avatar-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 80px 1.5rem 3rem; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: row; flex-wrap: wrap; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-brand">S. Sundar</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#expertise">Expertise</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="ring2"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <!-- Avatar placeholder — replace src with your photo -->
+        <div class="avatar-wrap" id="avatarWrap">
+          <div class="avatar-inner">
+            <svg class="avatar-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+              <rect width="160" height="160" fill="#1a2035"/>
+              <!-- body -->
+              <ellipse cx="80" cy="130" rx="46" ry="30" fill="#252d42"/>
+              <!-- shirt detail -->
+              <ellipse cx="80" cy="133" rx="32" ry="22" fill="#1e2a45"/>
+              <!-- neck -->
+              <rect x="68" y="95" width="24" height="18" rx="6" fill="#c8a882"/>
+              <!-- head -->
+              <ellipse cx="80" cy="76" rx="32" ry="34" fill="#c8a882"/>
+              <!-- hair -->
+              <ellipse cx="80" cy="46" rx="32" ry="18" fill="#1a1008"/>
+              <rect x="48" y="46" width="8" height="22" rx="4" fill="#1a1008"/>
+              <rect x="104" y="46" width="8" height="22" rx="4" fill="#1a1008"/>
+              <!-- ears -->
+              <ellipse cx="48" cy="76" rx="5" ry="7" fill="#c8a882"/>
+              <ellipse cx="112" cy="76" rx="5" ry="7" fill="#c8a882"/>
+              <!-- eyes -->
+              <ellipse cx="67" cy="74" rx="5" ry="5.5" fill="#1a1008"/>
+              <ellipse cx="93" cy="74" rx="5" ry="5.5" fill="#1a1008"/>
+              <circle cx="69" cy="72" r="1.5" fill="white" opacity=".7"/>
+              <circle cx="95" cy="72" r="1.5" fill="white" opacity=".7"/>
+              <!-- eyebrows -->
+              <path d="M62 68 Q67 65 72 68" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M88 68 Q93 65 98 68" stroke="#1a1008" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <!-- nose -->
+              <ellipse cx="80" cy="82" rx="3" ry="4" fill="#b8906e"/>
+              <!-- smile -->
+              <path d="M70 90 Q80 97 90 90" stroke="#8a6040" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- collar / shirt top -->
+              <path d="M58 113 L72 108 L80 118 L88 108 L102 113" stroke="#252d42" stroke-width="2" fill="#1e2a45" stroke-linejoin="round"/>
+              <!-- gold accent ring label -->
+              <text x="80" y="157" text-anchor="middle" font-family="monospace" font-size="7" fill="#e8a838" opacity=".7" letter-spacing="1">REPLACE WITH PHOTO</text>
+            </svg>
+          </div>
+        </div>
+        <div class="hero-eyebrow">Service Transformation &amp; Automation Architect</div>
+        <h1>Shanmuga<br/><em>Sundar</em><br/>Arumugam</h1>
+        <p class="hero-sub">
+          Driving <strong>intelligent automation</strong> and <strong>digital transformation</strong> for enterprise clients across Retail, Telecom &amp; Finance — turning operational complexity into measurable business outcomes.
+        </p>
+        <div class="hero-ctas">
+          <a href="#experience" class="btn btn-primary">View Experience</a>
+          <a href="#contact" class="btn btn-outline">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num">20+</div>
+          <div class="stat-label">Years in IT</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">30%</div>
+          <div class="stat-label">Ticket Reduction</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">10%</div>
+          <div class="stat-label">FTE Cost Savings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">$M+</div>
+          <div class="stat-label">Savings Delivered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-wrap">
+      <div class="section-label">Profile</div>
+      <div class="about-grid reveal">
+        <div class="about-text">
+          <h2>Turning complexity into<br/><em style="font-family:'DM Serif Display',serif; color:var(--gold); font-style:italic;">competitive advantage.</em></h2>
+          <p>
+            I work as the <strong>Service Transformation &amp; Automation Architect</strong> for a major UKI retailer — leading data-driven IT Operations, Service Management frameworks, and end-to-end Automation strategy, while also supporting strategic technology transformation programmes across UKI customers.
+          </p>
+          <p>
+            My expertise spans Microservices, Python, Splunk, RPA — enabling <strong>data-driven IT Operations</strong> that deliver tangible ROI. I'm passionate about ideas in technology that solve real business problems across Retail, Finance, Telecommunications, and youth-centric markets.
+          </p>
+          <div class="highlight-box">
+            <p>"A focused change agent — transforming challenging operational situations into opportunities for automation and sustainable business value."</p>
+          </div>
+        </div>
+        <div class="cert-list">
+          <h3 style="font-family:'DM Mono',monospace; font-size:.7rem; color:var(--gold); letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem;">Certifications</h3>
+          <div class="cert-item">
+            <div class="cert-icon">🤖</div>
+            <div>
+              <div class="cert-name">GitHub Copilot Professional</div>
+              <div class="cert-org">GitHub — Certified AI Pair Programming</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">📊</div>
+            <div>
+              <div class="cert-name">Splunk Professional</div>
+              <div class="cert-org">Splunk — AIOps &amp; ITSI Platform</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">🎓</div>
+            <div>
+              <div class="cert-name">Certified Application Designer</div>
+              <div class="cert-org">Accenture Solutions Delivery Academy · Co-sponsored by MIT</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">🎓</div>
+            <div>
+              <div class="cert-name">Certified Application Developer</div>
+              <div class="cert-org">ASDA · Co-sponsored by MIT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section id="expertise">
+    <div class="section-wrap">
+      <div class="section-label">Core Domains</div>
+      <h2 class="reveal">Where I <em style="font-family:'DM Serif Display',serif;color:var(--gold);font-style:italic;">create impact</em></h2>
+      <div class="expertise-grid">
+
+        <div class="exp-card reveal">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">AIOps &amp; Intelligent Automation</div>
+          <div class="card-desc">Designed and implemented end-to-end AIOps frameworks using Splunk &amp; ITSI, enabling predictive alerting, automated resolution, and measurable 99.X% service availability across enterprise clients.</div>
+        </div>
+
+        <div class="exp-card reveal">
+          <div class="card-icon">🏗️</div>
+          <div class="card-title">Service Management Framework</div>
+          <div class="card-desc">Architected E2E service operations frameworks, driving efficiency through structured service reviews, SLA governance, and continuous improvement pipelines aligned to business goals.</div>
+        </div>
+
+        <div class="exp-card reveal">
+          <div class="card-icon">🔄</div>
+          <div class="card-title">Business Process Automation</div>
+          <div class="card-desc">Led OPERA initiatives across UKI Products clients — delivering Business Process Automations for Retail, Supply Chain, and Corporate operations, consistently exceeding $M savings targets.</div>
+        </div>
+
+        <div class="exp-card reveal">
+          <div class="card-icon">🧱</div>
+          <div class="card-title">Full Stack Engineering</div>
+          <div class="card-desc">End-to-end delivery using Django &amp; Spring Boot microservices, Python, Docker, and CI/CD pipelines via GitHub Actions — from architecture to production deployment.</div>
+        </div>
+
+        <div class="exp-card reveal">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">Cloud &amp; Digital Transformation</div>
+          <div class="card-desc">Devised and executed digital transformation strategies integrating RPA, APM, Splunk, and ITSM toolsets in the cloud — enabling measurable productivity and cost optimisation at scale.</div>
+        </div>
+
+        <div class="exp-card reveal">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">Strategic Partnership &amp; GTM</div>
+          <div class="card-desc">Led Splunk Ecosystem Strategic Partnership across EMEA — co-creating AIOps strategies with Diamond/Foundation/Strategic accounts and driving go-to-market execution across 3 languages.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-wrap">
+      <div class="section-label">Technical Arsenal</div>
+      <h2 class="reveal">Skills &amp; <em style="font-family:'DM Serif Display',serif;color:var(--gold);font-style:italic;">Technologies</em></h2>
+      <div class="skills-container reveal">
+
+        <div class="skill-group">
+          <h3>AIOps &amp; Observability</h3>
+          <div class="tags">
+            <span class="tag gold">Splunk</span>
+            <span class="tag gold">ITSI</span>
+            <span class="tag">SignalFx</span>
+            <span class="tag">Predictive Alerting</span>
+            <span class="tag">ServiceNow (SNOW)</span>
+            <span class="tag">ITSM</span>
+            <span class="tag">APM</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>Full Stack &amp; Engineering</h3>
+          <div class="tags">
+            <span class="tag teal">Django</span>
+            <span class="tag teal">Spring Boot</span>
+            <span class="tag teal">Python</span>
+            <span class="tag teal">Playwright</span>
+            <span class="tag">Microservices</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">Docker</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>CI/CD &amp; DevOps</h3>
+          <div class="tags">
+            <span class="tag gold">GitHub Actions</span>
+            <span class="tag gold">GitHub Copilot ✓</span>
+            <span class="tag">DevOps</span>
+            <span class="tag">CI/CD Pipelines</span>
+            <span class="tag">Infrastructure as Code</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>Automation &amp; RPA</h3>
+          <div class="tags">
+            <span class="tag teal">UiPath (RPA)</span>
+            <span class="tag">Process Automation</span>
+            <span class="tag">Shift Left</span>
+            <span class="tag">Intelligent Automation</span>
+            <span class="tag">Automated Resolution</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>Domains</h3>
+          <div class="tags">
+            <span class="tag">Retail</span>
+            <span class="tag">Supply Chain</span>
+            <span class="tag">Warehouse</span>
+            <span class="tag">Telecom</span>
+            <span class="tag">Finance</span>
+            <span class="tag">Mobile Banking</span>
+            <span class="tag">Manufacturing</span>
+          </div>
+        </div>
+
+        <div class="skill-group">
+          <h3>Leadership &amp; Strategy</h3>
+          <div class="tags">
+            <span class="tag gold">Business Transformation</span>
+            <span class="tag">Stakeholder Management</span>
+            <span class="tag">GTM Strategy</span>
+            <span class="tag">Delivery Management</span>
+            <span class="tag">Service Architecture</span>
+            <span class="tag">Thought Leadership</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-wrap">
+      <div class="section-label">Career Journey</div>
+      <h2 class="reveal">Selected <em style="font-family:'DM Serif Display',serif;color:var(--gold);font-style:italic;">Experience</em></h2>
+      <div class="timeline reveal">
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-period">Current Role</div>
+          <div class="tl-role">Service Transformation &amp; Automation Architect</div>
+          <div class="tl-org">Major UKI Retailer · Also supporting Automation adoption across UKI Customers</div>
+          <ul class="tl-points">
+            <li>Leading <strong>end-to-end automation strategy</strong> and execution across Retail, Supply Chain &amp; Corporate operations — driving business process improvements and measurable productivity gains.</li>
+            <li>Championing adoption of automation initiatives across UKI customer base, providing thought leadership, strategy &amp; technical expertise around AIOps implementation.</li>
+            <li>Full-stack delivery via <strong>Django microservices, Playwright test automation, GitHub Actions CI/CD pipelines</strong>, and AI-assisted development with GitHub Copilot.</li>
+            <li>Providing data-driven IT Operations capability using <strong>Splunk, Python, RPA, and APM</strong> toolsets to enable intelligent, proactive service management.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-period">Mar 2020 – Apr 2021</div>
+          <div class="tl-role">AIOps Architect — EMEA Strategic Partnership</div>
+          <div class="tl-org">Splunk Ecosystem · UK</div>
+          <ul class="tl-points">
+            <li>Led GTM strategy and launch activities across new and existing Splunk opportunities to <strong>maximise ESP revenue</strong> across Diamond, Foundation &amp; Strategic accounts.</li>
+            <li>Assessed existing Splunk implementations and proposed architecture improvements to drive business value and consulting opportunities.</li>
+            <li><strong>Delivered Splunk AIOps webinar series across EMEA</strong> in 3 languages (English, French, German).</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-period">Dec 2015 – 2020</div>
+          <div class="tl-role">AIOps Architect / SRE Lead</div>
+          <div class="tl-org">UKI Retailer · UK / India</div>
+          <ul class="tl-points">
+            <li>Drove end-to-end monitoring &amp; automation ensuring <strong>99.X% service availability</strong> for end customers at scale.</li>
+            <li>Implemented Intelligent Automations &amp; Predictive Alerting (Splunk/ITSI, SNOW + UiPath RPA) — resulting in <strong>10% FTE reduction</strong> and significant cost savings on routine tasks.</li>
+            <li>Established continuous improvement engagement process across Business &amp; IT — delivering Business Process Automations across Retail, Supply Chain &amp; Corporate.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot muted"></div>
+          <div class="tl-period">Jan 2011 – Nov 2015</div>
+          <div class="tl-role">Automation &amp; Delivery Manager</div>
+          <div class="tl-org">UKI Retailer · Whiteley, UK</div>
+          <ul class="tl-points">
+            <li>Single point of contact for all customer escalations; daily stakeholder engagement across business and IT.</li>
+            <li>Proactive monitoring &amp; Shift Left initiatives <strong>reduced support ticket volume by 30%</strong>.</li>
+            <li>Conducted periodic service reviews covering performance, improvement actions, and risk management.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot muted"></div>
+          <div class="tl-period">2005 – 2010</div>
+          <div class="tl-role">Data Architect &amp; Senior Systems Analyst</div>
+          <div class="tl-org">Leading Nordic Telecoms · Norway / India</div>
+          <ul class="tl-points">
+            <li>Developed change strategies for <strong>Mobile data analysis</strong> to optimise Base Stations &amp; enhance network coverage.</li>
+            <li>Designed, implemented &amp; enhanced the Order Management System for both Fixed &amp; Mobile business.</li>
+            <li>Led translation of business requirements into technical architecture and delivery.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-wrap">
+      <div class="contact-inner reveal">
+        <div class="contact-left">
+          <div class="section-label">Let's Connect</div>
+          <h2>Open to <em style="font-family:'DM Serif Display',serif;color:var(--gold);font-style:italic;">conversations</em></h2>
+          <p>Whether it's AIOps architecture, automation strategy, or digital transformation — I'm always interested in meaningful collaborations and thought leadership opportunities.</p>
+          <div class="contact-links">
+            <a href="mailto:a.shanmuga.sundar@gmail.com" class="contact-link">
+              <span class="contact-icon">✉️</span>
+              a.shanmuga.sundar@gmail.com
+            </a>
+            <a href="tel:+919360256253" class="contact-link">
+              <span class="contact-icon">📱</span>
+              +91 93602 56253
+            </a>
+            <a href="https://linkedin.com" target="_blank" class="contact-link">
+              <span class="contact-icon">🔗</span>
+              Connect on LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" class="contact-link">
+              <span class="contact-icon">⌨️</span>
+              View GitHub Projects
+            </a>
+          </div>
+        </div>
+        <div class="value-props">
+          <div class="vp-item">
+            <div class="vp-num">20+</div>
+            <div class="vp-text">Years IT Experience</div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-num">3</div>
+            <div class="vp-text">Languages (EMEA Webinars)</div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-num">$M+</div>
+            <div class="vp-text">Savings Delivered YoY</div>
+          </div>
+          <div class="vp-item">
+            <div class="vp-num">99.X%</div>
+            <div class="vp-text">Service Availability SLA</div>
+          </div>
+          <div class="vp-item" style="grid-column:span 2;">
+            <div class="vp-num" style="font-size:1.2rem; font-family:'Outfit',sans-serif; font-weight:600;">GitHub Copilot Certified</div>
+            <div class="vp-text">AI-assisted development professional · Full Stack · CI/CD · AIOps</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-brand">Shanmuga Sundar Arumugam</span>
+    <span class="footer-copy">AIOps Architect · Business Transformation Lead · Automation Expert</span>
+  </footer>
+
+  <script>
+    // ── PHOTO SWAP HELPER ──
+    // To replace the avatar with your photo:
+    // 1. Place your photo file (e.g. photo.jpg) in the same folder as index.html
+    // 2. Uncomment and edit the lines below:
+    //
+    // const avatarInner = document.querySelector('.avatar-inner');
+    // avatarInner.innerHTML = '<img src="photo.jpg" alt="Shanmuga Sundar" />';
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => obs.observe(el));
+
+    // Active nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
